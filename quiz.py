@@ -17,3 +17,7 @@ def initialize_data():
 
 def check_answer():
     ids, question, answer = initialize_data()
+    if len(ids) > 0:
+        print("There are questions in the database")
+
+check_answer()
