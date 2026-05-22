@@ -15,9 +15,26 @@ def initialize_data():
     answer = [row[2] for row in rows]
     return ids, question, answer
 
-def check_answer():
+def check_question():
     ids, question, answer = initialize_data()
     if len(ids) > 0:
         print("There are questions in the database")
+    else:
+        print("Add questions to the database")
 
-check_answer()
+#start the quiz
+
+def display_answer():
+    question = initialize_data()[1]
+    answer = initialize_data()[2]
+    print(answer)
+
+    for ques, ans in zip(question, answer):
+        user_answer = input(f"{ques}: ")
+        print(ans)
+        if int(user_answer) == ans:
+            print("Correct")
+        else:
+            print("Wrong")
+        print(ans)
+display_answer()
