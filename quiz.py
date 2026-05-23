@@ -1,5 +1,5 @@
 """Customizable quiz python code for any subject, with a database to store questions and answers.
-14/05/26 by KARL"""
+14/05/26 by KARLx"""
 import sqlite3
 
 DB = 'quiz.db'
@@ -15,12 +15,69 @@ def initialize_data():
     answer = [row[2] for row in rows]
     return ids, question, answer
 
-def check_question():
-    ids, question, answer = initialize_data()
-    if len(ids) > 0:
-        print("There are questions in the database")
-    else:
-        print("Add questions to the database")
+
+def add_question():
+    added_question = initialize_data()[1]
+    added_answer = initialize_data([2])
+
+    while True:
+        while True:
+            question_input = input("Enter question: ").strip()
+            if len(question_input) < 0:
+                print("That's invalid, please enter a proper question ")
+            else:
+                added_question.append(question_input)
+                break
+        while True:
+            answer_input = input(f"Enter Answer for {added_question[-1]}:==>: ").strip()
+            if answer_input == None:
+                print("Please Enter the Answer!")
+            else:
+                added_answer.append(answer_input)
+                confirmation = input("Do you wan't to continue? y/n").lower
+                if confirmation == 'y':
+                    continue
+                elif confirmation == 'n':
+                    break
+    return added_question, added_answer
+    
+
+
+
+
+
+
+
+def delete_question():
+
+
+def view_all_question():
+    all_q = initialize_data()[1]
+    print(all_q)
+
+    while True:
+        user = input("add_question? y/n: ").strip().lower()
+        if user == 'n':
+            return 
+        elif user == 'y':
+            add_question()  
+            return 
+        else:
+            print("Invalid input. Please enter 'y' or 'n'.")
+
+
+
+
+
+
+
+
+
+#========Main menu========#
+def main_menu():
+
+
+
 
 #start the quiz
 
