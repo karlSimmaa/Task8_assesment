@@ -14,7 +14,7 @@ def initialize_data():
     cursor.execute("SELECT id, questions, answers FROM questions")
     rows = cursor.fetchall()
     #give Them each a number value and save it as a list!!
-    ids = [row[0] for row in rows]
+    ids = [row[0] for row in rows]                                                                                                                                                                                                                                                                                                                                                                                  
     question = [row[1] for row in rows]
     answer = [row[2] for row in rows]
     return ids, question, answer
@@ -74,7 +74,7 @@ def add_question():
             elif confirmation == "y":
                 add_question()
             else:
-                print("Invalid Input!")
+                print("\nInvalid! Please Enter Correct Letter")
 
     conn.close()
     
@@ -118,13 +118,13 @@ def delete_question():
 
         #if they want to leave this domain or not
     while True:
-        user = input("Continue? y/n").lower().strip()
+        user = input("Continue? y/n ").lower().strip()
         if user == "y":
             delete_question()
         elif user == "n":
             main_menu()
         else:
-            print("Invalid! Enter the Appropriate Letter!")
+            print("\nInvalid! Please Enter Correct Letter")
         
 
 
@@ -143,7 +143,7 @@ def view_all_question():
             add_question()  
             return 
         else:
-            print("Invalid input. Please enter 'y' or 'n'.")
+            print("\nInvalid! Please Enter Correct Letter")
             
             
 #function for starting the quiz
@@ -176,7 +176,7 @@ def quiz():
 
     #confirmation if they want to continue
     while True:
-        user = input("\nRestart Quiz or Main Menu? y/n").lower().strip()
+        user = input("\nRestart Quiz or Main Menu? y/n ").lower().strip()
         if user == "y":
             quiz()
         elif user == "n":
@@ -191,8 +191,8 @@ def main_menu():
           1. Take Quiz
           2. Add Question
           3. Delete Question
-          4. Exit
-          5. View All Question""")
+          4. View All Question
+          5. Exit""")
     #if they press a certain number then go to that doamin
     user_input = int(input("Enter number: "))
     if user_input == 1:
@@ -203,9 +203,9 @@ def main_menu():
     elif user_input == 3:
         delete_question()
     elif user_input == 4:
-        print("Thank you for plaing")
-    elif user_input == 5:
         view_all_question()
+    elif user_input == 5:
+        print("Thank you for plaing")
     else:
         print("Invalid Number!!")
 
