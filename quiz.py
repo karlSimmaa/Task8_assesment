@@ -21,7 +21,7 @@ def add_question():
 
     conn = sqlite3.connect(DB)
     cursor = conn.cursor()
-
+    print("BEWARE This is CASE SENSITIVE!!")
     while True:
         while True:
             question_input = input("Enter question: ").strip()
@@ -44,6 +44,7 @@ def add_question():
                 break
         confirmation = input("Do you want to continue? y/n: ").strip().lower()
         if confirmation == 'n':
+            main_menu()
             break
     conn.close()
     
@@ -81,8 +82,13 @@ def delete_question():
                 print("That id does not exist. Please pick an id from the list.")
         except ValueError:
             print("Invalid input. Please enter a valid number for the id.")
-            
-    conn.close()
+            conn.close()
+    user = input("Continue? y/n").lower().strip()
+    if user == "y":
+        delete_question()
+    elif user == "n":
+        main_menu()
+        
 
 
 
@@ -93,6 +99,7 @@ def view_all_question():
     while True:
         user = input("add_question? y/n: ").strip().lower()
         if user == 'n':
+            main_menu()
             return 
         elif user == 'y':
             add_question()  
@@ -100,32 +107,48 @@ def view_all_question():
         else:
             print("Invalid input. Please enter 'y' or 'n'.")
             
-#test
-view_all_question()
-
-
-
-
-
-
-
-#========Main menu========#
-
-
-
 #start the quiz
 
-def display_answer():
+def quiz():
     question = initialize_data()[1]
     answer = initialize_data()[2]
-    print(answer)
 
     for ques, ans in zip(question, answer):
         user_answer = input(f"{ques}: ")
         print(ans)
-        if int(user_answer) == ans:
+        if (user_answer) == ans:
             print("Correct")
         else:
-            print("Wrong")
-        print(ans)
-display_answer()
+            print(f"Wrong it's {ans}")
+    user = input("\nRestart Quiz or Main Menu? y/n").lower().strip()
+    if user == "y":
+        quiz()
+    elif user == "n":
+        main_menu()
+    else:
+        print("\nInvalid! Please Enter Correct Letter")
+
+
+def main_menu():
+    print("""Main Menu
+          1. Take Quiz
+          2. Add Question
+          3. Delete Question
+          5. View All Question
+          4. Exit""")
+    
+    user_input = int(input("Enter number: "))
+    if user_input == 1:
+        print("\nQuiz starting: ")
+        quiz()
+    elif user_input == 2:
+        add_question()
+    elif user_input == 3:
+        delete_question()
+    elif user_input == 4:
+        print("Thank you for plaing")
+    elif user_input == 5:
+        view_all_question()
+    else:
+        print("Invalid Number!!")
+main_menu()
