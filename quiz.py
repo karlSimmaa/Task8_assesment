@@ -4,7 +4,7 @@ import sqlite3
 
 #to make DB equivalent to the sqling file
 DB = 'quiz.db'
-
+line = "-" * 35
 #functions
 
 #function for fetching all the necessary data
@@ -21,6 +21,8 @@ def initialize_data():
 
 #function for adding question
 def add_question():
+    print(line)
+    print(line)
     #fetch/get the data from initialize function into a new named variable
     ids, added_question, added_answer = initialize_data()
     #variable/maging letter for easy access for connecting to the database
@@ -35,6 +37,7 @@ def add_question():
         #another while loop so that if this specific condition wanted to be repeated again⬇️
         
         while True:
+            print(line)
             #ask what question they want
             question_input = input("Enter question: ").strip()
             #if they just press space or enter then print that it's invalid
@@ -47,6 +50,7 @@ def add_question():
 
         #another while loop so that if this specific condition wanted to be repeated again⬇️
         while True:
+            print(line)
             #answer for the question
             answer_input = input(f"Enter Answer for {added_question[-1]}:==>: ").strip()
             #if they enter none then print a warning and not append else append it
@@ -66,6 +70,7 @@ def add_question():
                 break
             #ask if they want another question
         while True:
+            print(line)
             confirmation = input("Do you want to continue? y/n: ").strip().lower()
             if confirmation == 'n':
                 conn.close()
@@ -88,6 +93,7 @@ def delete_question():
     ids, questions, answers = initialize_data()
     #if no id then go to add question function
     if len(ids) == 0:
+        print(line)
         print("There are no questions in the database to delete.")
         add_question()
     #for loop to print the id and question so they can choose which one to delete
@@ -100,6 +106,7 @@ def delete_question():
     while True:
         #use try for invalid id
         try:
+            print(line)
             #an input to remove the question using the id
             delete_id = int(input("Enter the id of the question you want to delete: "))
             #if it's in ids's list then continue
@@ -118,6 +125,7 @@ def delete_question():
 
         #if they want to leave this domain or not
     while True:
+        print(line)
         user = input("Continue? y/n ").lower().strip()
         if user == "y":
             delete_question()
@@ -135,6 +143,7 @@ def view_all_question():
 
     #ask if they want to leave or not
     while True:
+        print(line)
         user = input("add_question? y/n: ").strip().lower()
         if user == 'n':
             main_menu()
@@ -148,6 +157,7 @@ def view_all_question():
             
 #function for starting the quiz
 def quiz():
+    print(line)
     #fetch the data from database
     question = initialize_data()[1]
     answer = initialize_data()[2]
@@ -161,17 +171,21 @@ def quiz():
         return
     #a for loop to go to every question with the answer besides it
     for ques, ans in zip(question, answer):
-        user_answer = input(f"{ques}: ")
-
+        print(line)
+        
+        user_answer = input(f"\n{ques}: ")
+        print(line)
+        
         #If it's the same as the answer then print correct
         if (user_answer) == ans:
-            print("Correct")
+            print("\nCorrect")
             #add 1 if they got one correct
             correct = correct + 1
         #if they get it wrong then print the right answer
         else:
-            print(f"Wrong it's {ans}")
-    print(f"You've got {correct} correct out of {question_t}")
+            print(line)
+            print(f"\nWrong it's {ans}")
+    print(f"\nYou've got {correct} correct out of {question_t}")
     correct = 0
 
     #confirmation if they want to continue
@@ -187,27 +201,32 @@ def quiz():
 
 # the main menu
 def main_menu():
-    print("""Main Menu
+    print(f"""
+          Main Menu
+         {line}
           1. Take Quiz
           2. Add Question
           3. Delete Question
           4. View All Question
           5. Exit""")
     #if they press a certain number then go to that doamin
-    user_input = int(input("Enter number: "))
-    if user_input == 1:
-        print("\nQuiz starting: ")
-        quiz()
-    elif user_input == 2:
-        add_question()
-    elif user_input == 3:
-        delete_question()
-    elif user_input == 4:
-        view_all_question()
-    elif user_input == 5:
-        print("Thank you for plaing")
-    else:
-        print("Invalid Number!!")
+    while True:
+        user_input = input("Enter number: ").lower().strip()
+        if user_input == '1':
+            print("\nQuiz starting: ")
+            quiz()
+        elif user_input == '2':
+            add_question()
+        elif user_input == '3':
+            delete_question()
+        elif user_input == '4':
+            view_all_question()
+        elif user_input == '5':
+            print("Thank you for plaing")
+            break
+            return
+        else:
+            print("Invalid Number!!")
 
 #=====start the whole thing======#        
 main_menu()
