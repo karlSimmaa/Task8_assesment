@@ -9,18 +9,22 @@ line = "-" * 35
 
 #function for fetching all the necessary data
 def initialize_data():
+    ids = 0
+    ques = 1
+    ans = 2
     conn = sqlite3.connect(DB)
     cursor = conn.cursor()
     cursor.execute("SELECT id, questions, answers FROM questions")
     rows = cursor.fetchall()
     #give Them each a number value and save it as a list!!
-    ids = [row[0] for row in rows]                                                                                                                                                                                                                                                                                                                                                                                  
-    question = [row[1] for row in rows]
-    answer = [row[2] for row in rows]
+    ids = [row[ids] for row in rows]                                                                                                                                                                                                                                                                                                                                                                                 
+    question = [row[ques] for row in rows]
+    answer = [row[ans] for row in rows]
     return ids, question, answer
 
 #function for adding question
 def add_question():
+    its_less_than = 0
     print(line)
     print(line)
     #fetch/get the data from initialize function into a new named variable
@@ -30,8 +34,7 @@ def add_question():
     cursor = conn.cursor()
 
     #print Warning!
-    print("BEWARE This is CASE SENSITIVE!!")
-
+    print("BEWARE The answer will automatically turn to Lower Case")
     #while true loop
     while True:
         #another while loop so that if this specific condition wanted to be repeated again⬇️
@@ -41,7 +44,7 @@ def add_question():
             #ask what question they want
             question_input = input("Enter question: ").strip()
             #if they just press space or enter then print that it's invalid
-            if len(question_input) <= 0:
+            if len(question_input) <= its_less_than:
                 print("That's invalid, please enter a proper question ")
             #else append that to the list
             else:
@@ -52,9 +55,9 @@ def add_question():
         while True:
             print(line)
             #answer for the question
-            answer_input = input(f"Enter Answer for {added_question[-1]}:==>: ").strip()
+            answer_input = input(f"Enter Answer for {added_question[-1]}:==>: ").strip().lower()
             #if they enter none then print a warning and not append else append it
-            if len(answer_input) <= 0: 
+            if len(answer_input) <= its_less_than: 
                 print("Please Enter the Answer!")
             else:
                 added_answer.append(answer_input)
@@ -68,16 +71,19 @@ def add_question():
                 #print confirmation
                 print(f"Successfully saved to database with ID: {new_id}!")
                 break
+            conn.close()
             #ask if they want another question
         while True:
             print(line)
             confirmation = input("Do you want to continue? y/n: ").strip().lower()
             if confirmation == 'n':
-                conn.close()
+                
                 main_menu()
                 break
+                return
             elif confirmation == "y":
                 add_question()
+                return
             else:
                 print("\nInvalid! Please Enter Correct Letter")
 
@@ -129,8 +135,10 @@ def delete_question():
         user = input("Continue? y/n ").lower().strip()
         if user == "y":
             delete_question()
+            return
         elif user == "n":
             main_menu()
+            return
         else:
             print("\nInvalid! Please Enter Correct Letter")
         
@@ -154,7 +162,8 @@ def view_all_question():
         else:
             print("\nInvalid! Please Enter Correct Letter")
             
-            
+
+
 #function for starting the quiz
 def quiz():
     print(line)
@@ -164,6 +173,7 @@ def quiz():
     question_t = len(question)
     #a variable to keep count of how many the user got correct
     correct = 0
+    add_correct = 1
     #if there's no question then print go to add Question
     if len(question) == 0:
         print("Add a question first!!!")
@@ -173,19 +183,20 @@ def quiz():
     for ques, ans in zip(question, answer):
         print(line)
         
-        user_answer = input(f"\n{ques}: ")
+        user_answer = input(f"\n{ques}: ").lower()
         print(line)
         
         #If it's the same as the answer then print correct
         if (user_answer) == ans:
             print("\nCorrect")
             #add 1 if they got one correct
-            correct = correct + 1
+            correct = correct + add_correct
         #if they get it wrong then print the right answer
         else:
             print(line)
             print(f"\nWrong it's {ans}")
     print(f"\nYou've got {correct} correct out of {question_t}")
+    #reset the number back to zero
     correct = 0
 
     #confirmation if they want to continue
@@ -193,8 +204,10 @@ def quiz():
         user = input("\nRestart Quiz or Main Menu? y/n ").lower().strip()
         if user == "y":
             quiz()
+            return
         elif user == "n":
             main_menu()
+            return
         else:
             print("\nInvalid! Please Enter Correct Letter")
             
@@ -222,9 +235,9 @@ def main_menu():
         elif user_input == '4':
             view_all_question()
         elif user_input == '5':
-            print("Thank you for plaing")
-            break
+            print("Thank you for playing")
             return
+            break
         else:
             print("Invalid Number!!")
 
